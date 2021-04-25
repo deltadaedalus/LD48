@@ -1,0 +1,18 @@
+Tilemancer 0.2.1
+
+Color 0 0 0
+PaletteSave1 
+PaletteSave2 
+FileSave1 \Users\Delta\Projects\LD48\src\images
+FileSave2 tiles
+Indexed 0
+Size 64
+Camera 0 0
+Node {
+Name cells.lua
+Position 186.686 49.6865
+Parameter 0 -1 -1 0
+Parameter 6 2 -1 0
+Parameter 25 0 100 0
+Parameter 100 0 -1 0
+}

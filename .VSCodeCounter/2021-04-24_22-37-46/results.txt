@@ -1,0 +1,88 @@
+Date : 2021-04-24 22:37:46
+Directory : c:\Users\Delta\Projects\LD48\src
+Total : 49 files,  3871 codes, 195 comments, 885 blanks, all 4951 lines
+
+Languages
++--------------+------------+------------+------------+------------+------------+
+| language     | files      | code       | comment    | blank      | total      |
++--------------+------------+------------+------------+------------+------------+
+| Lua          |         43 |      3,722 |        194 |        835 |      4,751 |
+| Markdown     |          1 |         91 |          0 |         41 |        132 |
+| GLSL         |          3 |         50 |          0 |          7 |         57 |
+| XML          |          1 |          6 |          0 |          1 |          7 |
+| Shell Script |          1 |          2 |          1 |          1 |          4 |
++--------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                 | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                    |         49 |      3,871 |        195 |        885 |      4,951 |
+| breezefield                                                                          |          7 |        388 |         54 |         87 |        529 |
+| breezefield\test                                                                     |          2 |        113 |         16 |         30 |        159 |
+| breezefield\test\test_queryareas                                                     |          1 |         31 |         10 |          8 |         49 |
+| libs                                                                                 |         24 |      2,461 |         84 |        510 |      3,055 |
+| libs\vudu                                                                            |         24 |      2,461 |         84 |        510 |      3,055 |
+| libs\vudu\vudu                                                                       |         24 |      2,461 |         84 |        510 |      3,055 |
+| libs\vudu\vudu\vudu                                                                  |         23 |      2,370 |         84 |        469 |      2,923 |
+| libs\vudu\vudu\vudu\themes                                                           |          4 |        130 |         22 |         10 |        162 |
+| libs\vudu\vudu\vudu\widgets                                                          |          7 |        290 |          0 |         58 |        348 |
+| misc                                                                                 |          1 |          6 |          0 |          1 |          7 |
+| shaders                                                                              |          3 |         50 |          0 |          7 |         57 |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| filename                                                                             | language     | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| c:\Users\Delta\Projects\LD48\src\breezefield\collider.lua                            | Lua          |         54 |          2 |         13 |         69 |
+| c:\Users\Delta\Projects\LD48\src\breezefield\init.lua                                | Lua          |         13 |          2 |         10 |         25 |
+| c:\Users\Delta\Projects\LD48\src\breezefield\test.sh                                 | Shell Script |          2 |          1 |          1 |          4 |
+| c:\Users\Delta\Projects\LD48\src\breezefield\test\main.lua                           | Lua          |         82 |          6 |         22 |        110 |
+| c:\Users\Delta\Projects\LD48\src\breezefield\test\test_queryareas\main.lua           | Lua          |         31 |         10 |          8 |         49 |
+| c:\Users\Delta\Projects\LD48\src\breezefield\utils.lua                               | Lua          |         25 |          4 |          4 |         33 |
+| c:\Users\Delta\Projects\LD48\src\breezefield\world.lua                               | Lua          |        181 |         29 |         29 |        239 |
+| c:\Users\Delta\Projects\LD48\src\constructible.lua                                   | Lua          |         31 |          0 |         10 |         41 |
+| c:\Users\Delta\Projects\LD48\src\entity.lua                                          | Lua          |         44 |          1 |         19 |         64 |
+| c:\Users\Delta\Projects\LD48\src\extraMath.lua                                       | Lua          |         13 |          1 |          2 |         16 |
+| c:\Users\Delta\Projects\LD48\src\generateWorld.lua                                   | Lua          |         18 |          0 |          7 |         25 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\README.md                            | Markdown     |         91 |          0 |         41 |        132 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\init.lua                        | Lua          |         19 |          0 |          4 |         23 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\themes\glassy.lua               | Lua          |         23 |          4 |          3 |         30 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\themes\hacky.lua                | Lua          |         23 |          4 |          3 |         30 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\themes\standard.lua             | Lua          |         42 |          7 |          2 |         51 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\themes\studious.lua             | Lua          |         42 |          7 |          2 |         51 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vdignore.lua                    | Lua          |         46 |          0 |          1 |         47 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vudu.lua                        | Lua          |        377 |         20 |         62 |        459 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vudubrowser.lua                 | Lua          |        162 |          3 |         63 |        228 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuduconsole.lua                 | Lua          |        204 |          1 |         24 |        229 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuducontrol.lua                 | Lua          |        142 |          5 |         33 |        180 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vudugraphics.lua                | Lua          |        134 |         11 |         36 |        181 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuduhotkey.lua                  | Lua          |         32 |          0 |          5 |         37 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuduphysics.lua                 | Lua          |        283 |          5 |         63 |        351 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuduui.lua                      | Lua          |        388 |         16 |         80 |        484 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuduutil.lua                    | Lua          |        113 |          1 |         20 |        134 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\vuduwindow.lua                  | Lua          |         50 |          0 |         10 |         60 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\checkboxwidget.lua      | Lua          |         22 |          0 |          6 |         28 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\referencetextwidget.lua | Lua          |         16 |          0 |          6 |         22 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\sliderwidget.lua        | Lua          |         69 |          0 |         17 |         86 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\textfieldwidget.lua     | Lua          |         63 |          0 |         11 |         74 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\textwidget.lua          | Lua          |         21 |          0 |          3 |         24 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\vudufieldwidget.lua     | Lua          |         32 |          0 |          5 |         37 |
+| c:\Users\Delta\Projects\LD48\src\libs\vudu\vudu\vudu\widgets\vudugraphwidget.lua     | Lua          |         67 |          0 |         10 |         77 |
+| c:\Users\Delta\Projects\LD48\src\main.lua                                            | Lua          |        110 |         15 |         33 |        158 |
+| c:\Users\Delta\Projects\LD48\src\misc\constructibles.tmx                             | XML          |          6 |          0 |          1 |          7 |
+| c:\Users\Delta\Projects\LD48\src\physicalEntity.lua                                  | Lua          |         18 |          0 |          8 |         26 |
+| c:\Users\Delta\Projects\LD48\src\player.lua                                          | Lua          |        124 |          1 |         30 |        155 |
+| c:\Users\Delta\Projects\LD48\src\playerTool.lua                                      | Lua          |        109 |          9 |         28 |        146 |
+| c:\Users\Delta\Projects\LD48\src\resources.lua                                       | Lua          |         13 |          0 |          8 |         21 |
+| c:\Users\Delta\Projects\LD48\src\shaders\lightOverlay.frag                           | GLSL         |         17 |          0 |          2 |         19 |
+| c:\Users\Delta\Projects\LD48\src\shaders\shadow.frag                                 | GLSL         |          5 |          0 |          1 |          6 |
+| c:\Users\Delta\Projects\LD48\src\shaders\terrain.frag                                | GLSL         |         28 |          0 |          4 |         32 |
+| c:\Users\Delta\Projects\LD48\src\sprite.lua                                          | Lua          |         21 |          0 |          6 |         27 |
+| c:\Users\Delta\Projects\LD48\src\terrain.lua                                         | Lua          |        206 |         13 |         56 |        275 |
+| c:\Users\Delta\Projects\LD48\src\ui.lua                                              | Lua          |         46 |          0 |         10 |         56 |
+| c:\Users\Delta\Projects\LD48\src\vector.lua                                          | Lua          |        142 |         17 |         47 |        206 |
+| c:\Users\Delta\Projects\LD48\src\wiringEntity.lua                                    | Lua          |         71 |          0 |         16 |         87 |
+| Total                                                                                |              |      3,871 |        195 |        885 |      4,951 |
++--------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+

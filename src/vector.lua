@@ -169,7 +169,7 @@ function math.clamp(x, m, M)
 end
 
 function lerp1(a, b, x)
-  return a + x * (b-a)
+  return a + (b-a) * x
 end
 
 function angleDiff(a, b)

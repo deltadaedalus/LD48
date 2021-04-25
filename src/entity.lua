@@ -18,8 +18,10 @@ function entity.updateAll(dt)
 end
 
 function entity.drawAll()
-    for i, e in ipairs(entity.all) do
-        e:draw()
+    for i = #entity.all, 1, -1 do
+        if (not entity.all[i].expired) then
+            entity.all[i]:draw()
+        end
     end
 end
 

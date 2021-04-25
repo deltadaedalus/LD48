@@ -11,6 +11,10 @@ terrain.__index = terrain
 
 terrain.baseShader = love.graphics.newShader(love.filesystem.read("shaders/terrain.frag"), nil)
 terrain.baseShader:send("cutoff", 0.5)
+terrain.baseShader:send("noise", love.graphics.newImage("images/rockNoise.png"))
+local gradient = love.graphics.newImage("images/StoneGradient.png")
+gradient:setFilter("nearest", "nearest")
+terrain.baseShader:send("gradient", gradient)
 
 terrain.chunkSize = 128
 
@@ -38,9 +42,9 @@ function terrain:draw()
     end
 end
 
-function terrain:paint(toolImage, x, y, ox, oy)
+function terrain:paint(toolImage, x, y, ox, oy, strength)
     for i, tc in ipairs(self.chunks) do
-        tc:paint(toolImage, x, y, ox, oy)
+        tc:paint(toolImage, x, y, ox, oy, strength)
     end
 
     for i, v in ipairs(self.terrainColliders) do
@@ -57,18 +61,27 @@ function terrain:chunkForPoint(point)
     return nil
 end
 
-function terrain:rayCast(point, ray, hitVal, maxDist)
+function terrain:rayCast(point, ray, hitVal, maxDist, stepsSoFar)
+    stepsSoFar = stepsSoFar or 1
+
+    if self:valueAt(point) > hitVal then 
+        return true, point 
+    elseif ray == vector.origin then
+        return false, point
+    end
+
     local stepper = point:copy()
     local hit = false
     local chunk = self:chunkForPoint(stepper)
 
-    while chunk ~= nil do
-        hit, stepper = chunk:rayCast(stepper, ray, hitVal, maxDist)
+    while chunk ~= nil and stepsSoFar < 2000 do
+        hit, stepper, stepsSoFar = chunk:rayCast(stepper, ray, hitVal, maxDist, stepsSoFar)
         if hit then 
-            local tooFar = point:dist(stepper)
-            return true, stepper 
+            local tooFar = point:dist(stepper) > maxDist
+            return not tooFar, stepper 
         end
-        chunk = self:chunkForPoint(stepper)
+        local nextChunk = self:chunkForPoint(stepper)
+        chunk = chunk == nextChunk and nil or nextChunk
     end
     
     return false, stepper
@@ -80,8 +93,33 @@ function terrain:valueAt(point)
     return 1
 end
 
+function terrain:gradientAt(point)
+    local l = self:valueAt(point + vector.new(-0.25, 0))
+    local r = self:valueAt(point + vector.new(0.25, 0))
+    local u = self:valueAt(point + vector.new(0, -0.25))
+    local d = self:valueAt(point + vector.new(0, 0.25))
+
+    return vector.new(r-l, d-u):unit()
+end
+
 function terrain:addCollider(world, collider, radius)
-    table.insert(self.terrainColliders, terrainCollider.new(self, world, collider, radius))
+    local tc = terrainCollider.new(self, world, collider, radius)
+    collider.terrainCollider = tc
+    table.insert(self.terrainColliders, tc)
+end
+
+function terrain:removeCollider(collider)
+    local tc = collider.terrainCollider
+
+    tc:cleanup()
+    local index = -1
+    for i, v in ipairs(self.terrainColliders) do
+        if (v == tc) then index = i; break; end
+    end
+
+    if index ~= -1 then
+        table.remove(self.terrainColliders, index)
+    end
 end
 
 
@@ -113,6 +151,8 @@ function terrainChunk.new(offsetX, offsetY)
 end
 
 function terrainChunk:draw()
+    terrain.baseShader:send("topDepth", self.offsetY / 8)
+    terrain.baseShader:send("bottomDepth", self.offsetY / 8 + .125)
     love.graphics.setShader(terrain.baseShader)
     love.graphics.draw(self.terrainCanvas, self.leftBound, self.topBound)
     love.graphics.setShader()
@@ -125,8 +165,8 @@ end
 
 --Raycast in the given direction until the desired value is encountered
 --returns: (whether the ray hit), (where iteration finished)
-function terrainChunk:rayCast(point, ray, hitVal, maxDist)
-    if not self:pointInBounds(point) then return false, point end
+function terrainChunk:rayCast(point, ray, hitVal, maxDist, stepsSoFar)
+    if not self:pointInBounds(point) then return false, point, stepsSoFar end
     if self.offboardDirty then self:refreshOffboard() end
 
     local stepper = point
@@ -142,26 +182,30 @@ function terrainChunk:rayCast(point, ray, hitVal, maxDist)
                 if (self:pointInBounds(stepper)) then
                     val = self:getExactValue(stepper)
                 else
-                    return true, stepper
+                    return true, stepper, stepsSoFar
                 end
             end
 
-            return true, stepper 
+            return true, stepper, stepsSoFar
         end
         stepper = stepper + strideRay
-    until not self:pointInBounds(stepper)
+        stepsSoFar = stepsSoFar + 1
+    until stepsSoFar > 2000 or not self:pointInBounds(stepper)
 
-    return false, stepper
+    return false, stepper, stepsSoFar
 end
 
 function terrainChunk:getExactValue(point)
+    if self.offboardDirty then self:refreshOffboard() end
+    point = point - vector.new(self.leftBound + 0.5, self.topBound + 0.5)
+
     local px = point.x % 1
     local py = point.y % 1
 
-    local x0 = point.x
-    local y0 = point.y
-    local x1 = math.min(point.x + 1, self.rightBound-1)
-    local y1 = math.min(point.y + 1, self.bottomBound-1)
+    local x0 = math.max(0, point.x)
+    local y0 = math.max(0, point.y)
+    local x1 = math.min(point.x + 1, terrain.chunkSize-1)
+    local y1 = math.min(point.y + 1, terrain.chunkSize-1)
 
     local v00 = self.offboardTerrain:getPixel(x0, y0)
     local v10 = self.offboardTerrain:getPixel(x1, y0)
@@ -171,11 +215,11 @@ function terrainChunk:getExactValue(point)
     return math.bilinearInterpolate(vector.new(px, py), v00, v10, v01, v11)
 end
 
-function terrainChunk:paint(toolImage, x, y, ox, oy) 
-    love.graphics.setBlendMode("darken", "premultiplied")
+function terrainChunk:paint(toolImage, x, y, ox, oy, strength) 
+    love.graphics.setBlendMode("subtract", "premultiplied")
     love.graphics.setCanvas(self.terrainCanvas)
 
-    love.graphics.setColor(1, 1, 1, 0.5)
+    love.graphics.setColor(1, 0, 0, strength)
     love.graphics.draw(toolImage, x - self.leftBound, y - self.topBound, 0, 1, 1, ox, oy)
 
     love.graphics.setCanvas()
@@ -227,6 +271,12 @@ function terrainCollider.new(terrain, world, collider, radius)
     return self
 end
 
+function terrainCollider:cleanup()
+    for i, v in ipairs(self.bristles) do
+        v.collider:destroy()
+    end
+end
+
 function terrainCollider:update(forceUnpin)
     local colliderPos = vector.new(self.collider:getX(), self.collider:getY())
     for i, v in ipairs(self.bristles) do
@@ -236,12 +286,22 @@ function terrainCollider:update(forceUnpin)
         if not pinned then
             local dir = vector.fromPolar(1, v.dir)
             local hit, hitPos = self.terrain:rayCast(colliderPos, dir, 0.5, self.radius)
-            v.pos = hitPos
-            local bristlePos = hitPos + dir * terrainCollider.bristleRadius * 2
-            v.collider:setPosition(bristlePos.x, bristlePos.y)
+            local degenerate = not hit or hitPos:dist2(colliderPos) < 0.04
+            if not degenerate then
+                if (v.degenerate) then v.collider:setActive(true) end
+                v.degenerate = false
+
+                v.pos = hitPos
+                local grad = hit and self.terrain:gradientAt(hitPos) or dir
+                local bristlePos = hitPos + grad * terrainCollider.bristleRadius
+                v.collider:setPosition(bristlePos.x, bristlePos.y)
+            else
+                if not v.degenerate then v.collider:setActive(false) end
+                v.degenerate = true
+            end
         end
 
-        vudu.graphics.drawCircle({0, 1, 1}, 0, bristlePos.x, bristlePos.y, terrainCollider.bristleRadius, 0.25)
+        --vudu.graphics.drawCircle({0, 1, 1}, 0, bristlePos.x, bristlePos.y, terrainCollider.bristleRadius, 0.25)
     end
 end
 
