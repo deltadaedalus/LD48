@@ -1,4 +1,4 @@
-local physicsEntity = require "physicalEntity"
+local physicsEntity = require "physicalentity"
 
 local constructible = {}
 constructible.__index = constructible

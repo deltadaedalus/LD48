@@ -1,8 +1,8 @@
 bf = require "breezefield"
 local entity = require "entity"
-local collider = require "src.breezefield.collider"
-local tools = require "playerTool"
-local sprite = require "src.sprite"
+local collider = require "breezefield.collider"
+local tools = require "playertool"
+local sprite = require "sprite"
 
 local Player = setmetatable({}, entity)
 Player.__index = Player

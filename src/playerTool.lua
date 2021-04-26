@@ -166,11 +166,6 @@ playerTool.construction.constructibles = {
         sprite.new(love.graphics.newImage("images/scaffold.png"), 0, 1/16, 1/16, 96, 16), 
         {-6, -1, -6, 1, 6, -1, 6, 1}, 
         true),
-
-    hab = constructible.new(
-        sprite.new(love.graphics.newImage("images/shelter.png"), 0, 1/16, 1/16, 16, 16), 
-        {-1, -1, -1, 1, 1, -1, 1, 1}, 
-        true)
 }
 playerTool.construction.currentConstructible = playerTool.construction.constructibles.scaffold
 playerTool.construction.icon = love.graphics.newImage("images/hammerIcon.png")

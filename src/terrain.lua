@@ -1,4 +1,4 @@
-require ("extraMath")
+require ("extramath")
 
 local terrainChunk = {}
 terrainChunk.__index = terrainChunk
@@ -11,7 +11,7 @@ terrain.__index = terrain
 
 terrain.baseShader = love.graphics.newShader(love.filesystem.read("shaders/terrain.frag"), nil)
 terrain.baseShader:send("cutoff", 0.5)
-terrain.baseShader:send("noise", love.graphics.newImage("images/rockNoise.png"))
+terrain.baseShader:send("noise", love.graphics.newImage("images/rocknoise.png"))
 local gradient = love.graphics.newImage("images/StoneGradient.png")
 gradient:setFilter("nearest", "nearest")
 terrain.baseShader:send("gradient", gradient)

@@ -1,6 +1,6 @@
-local physicalEntity = require "src.physicalEntity"
-physicalEntity = physicalEntity or require "physicalEntity"
-local sprite = require "src.sprite"
+local physicalEntity = require "physicalentity"
+physicalEntity = physicalEntity or require "physicalentity"
+local sprite = require "sprite"
 local pickup = require "pickup"
 local resourceMap = {}
 resourceMap.__index = resourceMap

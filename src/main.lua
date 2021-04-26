@@ -1,22 +1,21 @@
-vudu = require "libs.vudu.vudu.vudu"
+--vudu = require "libs.vudu.vudu.vudu"
 bf = require "breezefield"
-wiringEntity = require "wiringEntity"
-local physicalEntity = require "src.physicalEntity"
+wiringEntity = require "wiringentity"
 
 require "vector"
 terrain = require "terrain"
 entity = require "entity"
 Player = require "player"
 ui = require "ui"
-physicalEntity = require("physicalEntity")
+physicalEntity = require("physicalentity")
 worldGenerator = require "generateWorld"
 
 winSize = vector.new(800, 600)
 
 function love.load()
     --Infrastructure--
-    vudu.initialize()
-    vudu.setTheme("libs/vudu/vudu/vudu/themes/glassy.lua")
+    --vudu.initialize()
+    --vudu.setTheme("libs/vudu/vudu/vudu/themes/glassy.lua")
     love.window.setFullscreen(true, "desktop")
     --love.window.setMode(800, 600)
 
@@ -26,7 +25,7 @@ function love.load()
 
     --Physics--
     world = bf.newWorld(0, 100, true)
-    vudu.physics.setWorld(world)
+    --vudu.physics.setWorld(world)
 
     --Terrain--
     levelTerrain, levelResources = worldGenerator.generate(world)
@@ -114,8 +113,8 @@ function updateCamera(dt)
 
     camera.transform = love.math.newTransform(-camera.position.x * camera.zoom, -camera.position.y * camera.zoom, 0, camera.zoom, camera.zoom, -winSize.x/2/camera.zoom, -winSize.y/2/camera.zoom)
     
-    vudu.physics.setTransformation(-camera.position.x / camera.zoom, -camera.position.y / camera.zoom, camera.zoom, 0)
-    vudu.graphics.setTransformation(-camera.position.x/2, -camera.position.y/2, camera.zoom, 0)
+    --vudu.physics.setTransformation(-camera.position.x / camera.zoom, -camera.position.y / camera.zoom, camera.zoom, 0)
+    --vudu.graphics.setTransformation(-camera.position.x/2, -camera.position.y/2, camera.zoom, 0)
 end
 
 function love.draw()
