@@ -8,7 +8,7 @@ entity = require "entity"
 Player = require "player"
 ui = require "ui"
 physicalEntity = require("physicalentity")
-worldGenerator = require "generateWorld"
+worldGenerator = require "generateworld"
 
 winSize = vector.new(800, 600)
 
@@ -89,7 +89,7 @@ function love.update(dt)
 
     tutorial.update()
 
-    if (tutorial.complete and player:getPosition().y > radDepth + 16) then radDepth = radDepth + dt * 0.5 end
+    if (tutorial.complete and player.spawn.y > radDepth + 16) then radDepth = radDepth + dt * 0.33 end
 
     if (not gameCompleted and player:getPosition().y > worldBottom - 16) then
         gameCompleted = true

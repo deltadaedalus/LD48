@@ -1,4 +1,4 @@
-local wiringEntity = require "wiringEntity"
+local wiringEntity = require "wiringentity"
 local sprite = require "sprite"
 local playerTool = {}
 playerTool.__index = playerTool
