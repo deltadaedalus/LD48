@@ -174,13 +174,13 @@ function ui.mousepressedInventory(x, y, button, isRepeat)
 end
 
 ui.inventoryIcons = {
-    copper = love.graphics.newImage("images/copperIcon.png"),
-    iron = love.graphics.newImage("images/ironIcon.png")
+    copper = love.graphics.newImage("images/copperChunk.png"),
+    iron = love.graphics.newImage("images/ironChunk.png")
 }
 function ui.drawInventory()
     for i, v in ipairs(player.heldItems) do
         love.graphics.setColor(i == ui.inventoryHoveredIndex and {.8, .8, .8, 1} or {1, 1, 1, 1})
-        love.graphics.draw(ui.inventoryIcons[v], ui.inventoryX, winSize.y - 100 - ui.inventoryY - ((#player.heldItems - i)) * 50)    --TODO: scale
+        love.graphics.draw(ui.inventoryIcons[v], ui.inventoryX, winSize.y - 100 - ui.inventoryY - ((#player.heldItems - i)) * 50, 0, 1/2, 1/2)    --TODO: scale
     end
 end
 

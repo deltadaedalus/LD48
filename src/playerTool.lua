@@ -29,6 +29,11 @@ playerTool.pickaxe.toolImage = love.graphics.newImage("images/pickaxeTool.png")
 playerTool.pickaxe.sprite = sprite.new(love.graphics.newImage("images/pickaxe.png"), 0, 1/95, 1/95, 128, 280)
 playerTool.pickaxe.pickPeriod = 0.5
 playerTool.pickaxe.icon = love.graphics.newImage("images/pickIcon.png")
+playerTool.pickaxe.sounds = {
+    love.audio.newSource("sounds/pick1.wav", "static"),
+    love.audio.newSource("sounds/pick2.wav", "static"),
+    love.audio.newSource("sounds/pick3.wav", "static")
+}
 
 function playerTool.pickaxe:use( player, mousePos )
     if (t > self.toolRefresh) then
@@ -39,6 +44,9 @@ function playerTool.pickaxe:use( player, mousePos )
         digPos = hit and digPos or (playerPos + (dir:unit() * 5))
         levelTerrain:paint(self.toolImage, digPos.x, digPos.y, self.toolImage:getWidth()/2, self.toolImage:getHeight()/2, 0.1)
         levelResources:dig(digPos, self.toolImage:getWidth() + self.toolImage:getHeight())
+        local sound = self.sounds[math.random(1, 3)]:clone()
+        sound:setVolume(0.7)
+        sound:play()
         self.toolRefresh = t + self.pickPeriod
     end
 end
@@ -154,14 +162,9 @@ end
 local constructible = require("constructible")
 playerTool.construction = playerTool.new()
 playerTool.construction.constructibles = {
-    shelter = constructible.new(
-        sprite.new(love.graphics.newImage("images/testCube.png"), 0, 1/16, 1/16, 16, 16), 
-        {-1, -1, -1, 1, 1, -1, 1, 1}, 
-        false),
-
     scaffold = constructible.new(
-        sprite.new(love.graphics.newImage("images/scaffold.png"), 0, 1/16, 1/16, 16, 16), 
-        {-1, -1, -1, 1, 1, -1, 1, 1}, 
+        sprite.new(love.graphics.newImage("images/scaffold.png"), 0, 1/16, 1/16, 96, 16), 
+        {-6, -1, -6, 1, 6, -1, 6, 1}, 
         true),
 
     hab = constructible.new(
@@ -169,14 +172,21 @@ playerTool.construction.constructibles = {
         {-1, -1, -1, 1, 1, -1, 1, 1}, 
         true)
 }
-playerTool.construction.currentConstructible = playerTool.construction.constructibles.shelter
-playerTool.construction.icon = love.graphics.newImage("images/testCube.png")
+playerTool.construction.currentConstructible = playerTool.construction.constructibles.scaffold
+playerTool.construction.icon = love.graphics.newImage("images/hammerIcon.png")
 
 function playerTool.construction:use( player, mousePos )
-    if (t > self.toolRefresh) then
-        if (self.currentConstructible:canConstruct(world, mousePos)) then
-            self.currentConstructible:construct(world, mousePos)
-            self.toolRefresh = t + 0.5
+    if (player:getPosition():dist(mousePos) < 15) then
+        if (t > self.toolRefresh) then
+            local ironIndex = self:indexOfIronInPlayerInventory()
+            if (ironIndex ~= nil) then
+                if (self.currentConstructible:canConstruct(world, mousePos)) then
+                    self.currentConstructible:construct(world, mousePos)
+                    self.toolRefresh = t + 0.5
+                    self.setupSound:play()
+                    table.remove(player.heldItems, ironIndex)
+                end
+            end
         end
     end
 end
@@ -186,8 +196,19 @@ function playerTool.construction:update(player, dt)
 end
 
 function playerTool.construction:draw(player)
-    local mousePos = screenToWorld(vector.new(love.mouse.getPosition()));
-    self.currentConstructible:drawGhost(mousePos)
+    if (player:getPosition():dist(mousePos) < 15) then
+        local mousePos = screenToWorld(vector.new(love.mouse.getPosition()));
+        self.currentConstructible:drawGhost(mousePos)
+    end
+end
+
+function playerTool.construction:indexOfIronInPlayerInventory()
+    for i, v in ipairs(player.heldItems) do
+        if v == "iron" then
+            return i
+        end
+    end
+    return nil
 end
 
 --
@@ -211,6 +232,7 @@ function playerTool.wiring:use( player, mousePos )
                 if (not hit) or (hitPos:dist(self.linkingFromEntity.position) > hitPos:dist(mousePos)) then
                     self.linkingFromEntity = wiringEntity.new(mousePos, self.linkingFromEntity)
                     self.setupSound:play()
+                    player.spawn = mousePos
                     table.remove(player.heldItems, indexOfCopper)
                 end
             end

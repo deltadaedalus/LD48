@@ -55,6 +55,7 @@ function wiringEntity.renderLighting()
     love.graphics.setColor(1, 1, 1, 1)
     for i, v in ipairs(wiringEntity.all) do
         local scale = 0.5 + 0.5 * love.math.noise(t + i * 55.5) ^ 0.25
+        if (v.position.y < radDepth) then scale = scale * 0.25 end
         love.graphics.draw(v.lightingImage, v.position.x, v.position.y, 0, scale, scale, 20, 20)
     end
 end

@@ -7,10 +7,10 @@ local sprite = require "src.sprite"
 local Player = setmetatable({}, entity)
 Player.__index = Player
 
-Player.jumpImpulse = -0.75
-Player.moveSpeed = 12
+Player.jumpImpulse = -0.42
+Player.moveSpeed = 16
 Player.moveForce = 0.25
-Player.toolList = {tools.pickaxe, tools.laser, tools.construction, tools.wiring}
+Player.toolList = {tools.pickaxe, tools.laser, tools.wiring, tools.construction}
 Player.toolIndex = 1
 Player.standingImage = love.graphics.newImage("images/player_fancy.png")
 Player.standingSprite = sprite.new(Player.standingImage, 0, 1/95, 1/95, 128, 190)
@@ -24,7 +24,18 @@ Player.rechargeRate = 20
 function Player.new(world, terrain)
     local self = setmetatable(entity.new(), Player)
 
-    self.collider = bf.Collider.new(world, "Circle", 178, 45, 2)
+    local position = vector.new(178, 45)
+    self.collider = bf.Collider.new(world, "Polygon", 
+        1.2, 1.8, 
+        1, 2, 
+        0, 2,  
+        -1, 2, 
+        -1.2, 1.8, 
+        -1.2, -1.4, 
+        0, -1.8, 
+        1.2, -1.4)
+    self.collider:setFixedRotation(true)
+    self.collider:setPosition(position.x, position.y)
     self.collider:setFilterData(1, 65535, -1)
     self.collider:setSleepingAllowed(false)
     terrain:addCollider(world, self.collider, 15)
@@ -96,10 +107,22 @@ function Player:addEnergy(amt)
     end
 end
 
+function Player:isStandingOnSomething()
+    local contacts = self.collider:getContacts()
+    local pos = self:getPosition()
+    for i, c in ipairs(contacts) do
+        local x1, y1, x2, y2 = c:getPositions()
+
+        if (y1 ~= nil and y1 > pos.y + 1.5) then return true end
+        if (y2 ~= nil and y2 > pos.y + 1.5) then return true end
+    end
+    return false
+end
+
 Player.radBase = 10
 function Player:updateRads(dt)
     local pos = self:getPosition()
-    local radioactivity = self.radBase/(pos.y^2)
+    local radioactivity = self.radBase/((radDepth - pos.y)^2)
     for i = 1, 10 do
         if (math.random() < radioactivity) then
             self:tickRad()
@@ -163,20 +186,28 @@ function Player:keypressed( key, scancode, isrepeat )
         local playerPosition = vector.new(self.collider:getX(), self.collider:getY())
         local feetPosition = playerPosition + vector.new(0, 4)
 
-        local onGround = levelTerrain:valueAt(feetPosition) > 0.5
+        local onGround = levelTerrain:valueAt(feetPosition) > 0.5 or self:isStandingOnSomething()
 
         if onGround then
             self.collider:applyLinearImpulse(0, self.jumpImpulse)
         end
     end
 
-    if (key == 'e') then
+    if (key == 'q') then
         player.toolIndex = player.toolIndex % #player.toolList + 1
         player.currentTool = player.toolList[player.toolIndex]
     end
-    if (key == 'q') then
+    if (key == 'e') then
         player.toolIndex = (player.toolIndex - 2) % #player.toolList + 1
         player.currentTool = player.toolList[player.toolIndex]
+    end
+
+    if (tonumber(key)) then
+        local index = tonumber(key)
+        if (player.toolList[index]) then
+            player.toolIndex = index
+            player.currentTool = player.toolList[player.toolIndex]
+        end
     end
 end
 

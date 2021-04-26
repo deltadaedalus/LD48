@@ -151,8 +151,8 @@ function terrainChunk.new(offsetX, offsetY)
 end
 
 function terrainChunk:draw()
-    terrain.baseShader:send("topDepth", self.offsetY / 8)
-    terrain.baseShader:send("bottomDepth", self.offsetY / 8 + .125)
+    terrain.baseShader:send("topDepth", self.offsetY / 5)
+    terrain.baseShader:send("bottomDepth", self.offsetY / 5 + 0.2)
     love.graphics.setShader(terrain.baseShader)
     love.graphics.draw(self.terrainCanvas, self.leftBound, self.topBound)
     love.graphics.setShader()
@@ -246,7 +246,7 @@ end
 -----------------
 ----------------
 terrainCollider.bristleRadius = 0.5
-function terrainCollider.new(terrain, world, collider, radius)
+function terrainCollider.new(terrain, world, collider, radius, important)
     local self = setmetatable({}, terrainCollider)
 
     self.world = world
@@ -255,8 +255,9 @@ function terrainCollider.new(terrain, world, collider, radius)
     self.radius = radius
 
     self.bristles = {}
-    for i = 1, 32 do
-        local dir = math.pi * 2 * (i/32)
+    self.bristleCount = important and 32 or 12
+    for i = 1, self.bristleCount do
+        local dir = math.pi * 2 * (i/self.bristleCount)
         local pos = vector.new(collider:getX(), collider:getY()) + vector.fromPolar(radius, dir)
         local collider = bf.Collider.new(world, "Circle", pos.x, pos.y, terrainCollider.bristleRadius)
         collider:setType("static")
@@ -278,9 +279,10 @@ function terrainCollider:cleanup()
 end
 
 function terrainCollider:update(forceUnpin)
+    forceUnpin = true   --TODO: seems like this is just the best option here
     local colliderPos = vector.new(self.collider:getX(), self.collider:getY())
     for i, v in ipairs(self.bristles) do
-        local pinned = not forceUnpin and colliderPos:dist(v.pos) < 4
+        local pinned = not forceUnpin and (colliderPos:dist2(v.pos) < 16 and #v.collider:getContacts() > 0)
 
         local bristlePos = vector.new(v.collider:getX(), v.collider:getY())
         if not pinned then

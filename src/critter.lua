@@ -148,7 +148,9 @@ critter.slimeCritter.jumpImpulse = 0.2
 critter.slimeCritter.radBase = 3
 critter.slimeCritter.deathNoise = love.audio.newSource("sounds/slime_pain.wav", "static")
 critter.slimeCritter.noise1 = love.audio.newSource("sounds/slime_1.wav", "static")
+critter.slimeCritter.noise1:setVolume(0.2)
 critter.slimeCritter.noise2 = love.audio.newSource("sounds/slime_2.wav", "static")
+critter.slimeCritter.noise2:setVolume(0.2)
 critter.slimeCritter.image = love.graphics.newImage("images/slime.png")
 
 function critter.slimeCritter.new(world, terrain, position)

@@ -8,8 +8,8 @@ resourceMap.__index = resourceMap
 resourceMap.density = 1/10
 resourceMap.sparklePeriod = 10
 resourceMap.sprites =  {
-    copper = sprite.new(love.graphics.newImage("images/copperChunk.png"), 0, 1/16, 1/16, 8, 8),
-    iron = sprite.new(love.graphics.newImage("images/ironChunk.png"), 0, 1/16, 1/16, 8, 8)
+    copper = sprite.new(love.graphics.newImage("images/copperChunk.png"), 0, 1/75, 1/75, 100, 100),
+    iron = sprite.new(love.graphics.newImage("images/ironChunk.png"), 0, 1/75, 1/75, 100, 100),
 }
 
 function resourceMap.new(world, terrain)
