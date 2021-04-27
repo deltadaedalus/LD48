@@ -102,8 +102,8 @@ function terrain:gradientAt(point)
     return vector.new(r-l, d-u):unit()
 end
 
-function terrain:addCollider(world, collider, radius)
-    local tc = terrainCollider.new(self, world, collider, radius)
+function terrain:addCollider(world, collider, radius, important)
+    local tc = terrainCollider.new(self, world, collider, radius, important)
     collider.terrainCollider = tc
     table.insert(self.terrainColliders, tc)
 end
@@ -302,7 +302,7 @@ function terrainCollider:update(forceUnpin)
                 v.degenerate = true
             end
         end
-
+        
         --vudu.graphics.drawCircle({0, 1, 1}, 0, bristlePos.x, bristlePos.y, terrainCollider.bristleRadius, 0.25)
     end
 end

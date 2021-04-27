@@ -38,7 +38,7 @@ function Player.new(world, terrain)
     self.collider:setPosition(position.x, position.y)
     self.collider:setFilterData(1, 65535, -1)
     self.collider:setSleepingAllowed(false)
-    terrain:addCollider(world, self.collider, 15)
+    terrain:addCollider(world, self.collider, 15, true)
     table.insert(entity.acceptsInput, self)
 
     self.currentTool = self.toolList[self.toolIndex]

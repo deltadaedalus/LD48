@@ -109,7 +109,7 @@ function updateCamera(dt)
     camera.position.x = math.max(camera.position.x, leftBound + winSize.x / camera.zoom / 2)
     camera.position.x = math.min(camera.position.x, rightBound - winSize.x / camera.zoom / 2)
     camera.position.y = math.max(camera.position.y, topBound + winSize.y / camera.zoom / 2)
-    camera.position.y = math.min(camera.position.y, bottomBound + winSize.y / camera.zoom / 2)
+    camera.position.y = math.min(camera.position.y, bottomBound - winSize.y / camera.zoom / 2)
 
     camera.transform = love.math.newTransform(-camera.position.x * camera.zoom, -camera.position.y * camera.zoom, 0, camera.zoom, camera.zoom, -winSize.x/2/camera.zoom, -winSize.y/2/camera.zoom)
     
